@@ -15,7 +15,7 @@
 
 typedef enum { CHAR, INT, FLOAT, DOUBLE, PSEUDO } t_type;
 
-class ScalarConverter
+class RPN
 {
 
 	public:
@@ -23,12 +23,12 @@ class ScalarConverter
 
 	private:
 		//! Constructors and destructor
-		ScalarConverter();
-		ScalarConverter(const ScalarConverter& copy);
-		~ScalarConverter();
+		RPN();
+		RPN(const RPN& copy);
+		~RPN();
 
 		//! Operator overloading
-		ScalarConverter& operator=(const ScalarConverter& right);
+		RPN& operator=(const RPN& right);
 
 		//! Parser helpers
 		static bool isChar(const std::string &str);

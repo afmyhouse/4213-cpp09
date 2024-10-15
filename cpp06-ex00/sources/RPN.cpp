@@ -1,22 +1,22 @@
-# include "ScalarConverter.hpp"
+# include "RPN.hpp"
 
-ScalarConverter::ScalarConverter() {}
+RPN::RPN() {}
 
-ScalarConverter::ScalarConverter(const ScalarConverter& copy)
+RPN::RPN(const RPN& copy)
 {
 	*this = copy;
 }
 
-ScalarConverter::~ScalarConverter() {}
+RPN::~RPN() {}
 
-ScalarConverter& ScalarConverter::operator=(const ScalarConverter& right)
+RPN& RPN::operator=(const RPN& right)
 {
 	if (this == &right)
 		return (*this);
 	return (*this);
 }
 
-void ScalarConverter::convert(const std::string &str)
+void RPN::convert(const std::string &str)
 {
 	if (isChar(str))
 	{
@@ -46,7 +46,7 @@ void ScalarConverter::convert(const std::string &str)
 		std::cout << std::endl << "' " << str << " ' : conversion not possible!" << std::endl << std::endl;
 }
 
-void ScalarConverter::convertNumber(const std::string& input, long double number)
+void RPN::convertNumber(const std::string& input, long double number)
 {
 	printChar(static_cast<char>(number), input);
 	printInt(static_cast<int>(number), input);
@@ -54,7 +54,7 @@ void ScalarConverter::convertNumber(const std::string& input, long double number
 	printDouble(static_cast<double>(number), input);
 }
 
-void ScalarConverter::printChar(char c, const std::string &input)
+void RPN::printChar(char c, const std::string &input)
 {
 	if (checkOverflow(input, CHAR))
 		std::cout << "char: overflow\n";
@@ -64,7 +64,7 @@ void ScalarConverter::printChar(char c, const std::string &input)
 		std::cout << "char: Non displayable\n";
 }
 
-void ScalarConverter::printInt(int num, const std::string &str)
+void RPN::printInt(int num, const std::string &str)
 {
 	if (checkOverflow(str, INT))
 		std::cout << "int: overflow\n";
@@ -72,7 +72,7 @@ void ScalarConverter::printInt(int num, const std::string &str)
 		std::cout << "int: " << num << "\n";
 }
 
-void ScalarConverter::printFloat(float num, const std::string &str)
+void RPN::printFloat(float num, const std::string &str)
 {
 	if (checkOverflow(str, FLOAT))
 		std::cout << "float: overflow\n";
@@ -87,7 +87,7 @@ void ScalarConverter::printFloat(float num, const std::string &str)
 	}
 }
 
-void ScalarConverter::printDouble(double num, const std::string &str)
+void RPN::printDouble(double num, const std::string &str)
 {
 	if (checkOverflow(str, DOUBLE))
 		std::cout << "double: overflow\n";
@@ -103,7 +103,7 @@ void ScalarConverter::printDouble(double num, const std::string &str)
 	}
 }
 
-void ScalarConverter::printPseudo(const std::string &str)
+void RPN::printPseudo(const std::string &str)
 {
 	std::cout << "char: impossible\n";
 	std::cout << "int: impossible\n";
@@ -120,7 +120,7 @@ void ScalarConverter::printPseudo(const std::string &str)
 	}
 }
 
-bool ScalarConverter::checkOverflow(const std::string &str, t_type type)
+bool RPN::checkOverflow(const std::string &str, t_type type)
 {
 	long double d;
 
@@ -144,7 +144,7 @@ bool ScalarConverter::checkOverflow(const std::string &str, t_type type)
 	}
 }
 
-bool ScalarConverter::isChar(const std::string &str)
+bool RPN::isChar(const std::string &str)
 {
 	bool size = str.size() == 1;
 	bool isprint = std::isprint(str[0]);
@@ -153,7 +153,7 @@ bool ScalarConverter::isChar(const std::string &str)
 	return (size && isprint && notdigit);
 }
 
-bool ScalarConverter::isInt(const std::string &str)
+bool RPN::isInt(const std::string &str)
 {
 	if (str.empty())
 		return false;
@@ -172,7 +172,7 @@ bool ScalarConverter::isInt(const std::string &str)
 	return (startPos == 1 ? str.size() > 1 : str.size() > 0 && !of);
 }
 
-bool ScalarConverter::isFloat(const std::string &str)
+bool RPN::isFloat(const std::string &str)
 {
 	if (str.empty())
 		return false;
@@ -200,7 +200,7 @@ bool ScalarConverter::isFloat(const std::string &str)
 	return (intPart.size() > 0 && decPart.size() > 0);
 }
 
-bool ScalarConverter::isDouble(const std::string &str)
+bool RPN::isDouble(const std::string &str)
 {
 	if (str.empty())
 		return false;
@@ -227,7 +227,7 @@ bool ScalarConverter::isDouble(const std::string &str)
 	return (intPart.size() > 0 && decPart.size() > 0);
 }
 
-bool ScalarConverter::isPseudo(const std::string &str)
+bool RPN::isPseudo(const std::string &str)
 {
 	return (str == "-inff" || str == "-inf"
 		|| str == "nanf" || str == "nan"
