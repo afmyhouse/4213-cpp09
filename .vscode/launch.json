@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/anton/cc/4213-cpp09/ex01/sources",
-      "program": "/home/anton/cc/4213-cpp09/ex01/sources/build/Debug/outDebug",
+      "cwd": "${workspaceFolder}/ex",
+      "program": "${worksapceFolder}/ex/ex",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
