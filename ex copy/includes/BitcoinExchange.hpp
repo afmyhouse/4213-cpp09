@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:20:55 by crypto            #+#    #+#             */
-/*   Updated: 2024/10/17 11:13:12 by antoda-s         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:38:48 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ class BitcoinExchange
 		BitcoinExchange& operator=(const BitcoinExchange& right);
 
 		//! Member functions
-		bool btcXchange(const char *filename, const char* btcRatesDB);
+		bool convert(const char *filename);
 
 	private:
-		bool readExchangeRates(const char* database);
+		bool readExchangeRates(void);
 		bool extract(const std::string &line, std::string &date, double &ammount);
 		bool isValidDate(const std::string &date);
 		double findClosestDate(const std::string &date);

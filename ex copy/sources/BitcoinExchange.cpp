@@ -1,4 +1,4 @@
-#include "../includes/BitcoinExchange.hpp"
+#include "BitcoinExchange.hpp"
 
 
 BitcoinExchange::BitcoinExchange() {}
@@ -13,65 +13,58 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& right)
 {
 	if (this == &right)
 		return (*this);
-	this->_database = right._database;
+	this->database = right.database;
 	return (*this);
 }
 
-bool BitcoinExchange::btcXchange(const char *filename, const char* btcRatesDB)
+bool BitcoinExchange::convert(const char *filename)
 {
-	std::ifstream	inputFile;
+	std::ifstream	infile;
 	std::string		line, date;
 	double			ammount, worth;
 
-	if (!this->readExchangeRates(btcRatesDB))
+	if (!this->readExchangeRates())
 		return (false);
 
-	inputFile.open(filename, std::ios::in);
-	if (inputFile.fail())
+	infile.open(filename, std::ios::in);
+	if (infile.fail())
 		return (false);
 
-	std::getline(inputFile, date, '|'); // drop header : date | ammount
-	std::getline(inputFile, line);
-	if (date != "date" || line != "ammount")
-		return (ERROR_BAD_FILE(filename), false);
-
-	while (!inputFile.eof())
+	std::getline(infile, date);
+	while (!infile.eof())
 	{
-		std::getline(inputFile, line);
+		std::getline(infile, line);
 		if (line == "" || !extract(line, date, ammount))
 			continue;
-		if (_database.find(date) == _database.end())
+		if (database.find(date) == database.end())
 			worth = findClosestDate(date);
 		else
-			worth = _database[date];
+			worth = database[date];
 		std::cout << date << " => " << ammount << " = " << ammount * worth << std::endl;
 	}
-	inputFile.close();
+	infile.close();
 	return (true);
 }
 
-bool BitcoinExchange::readExchangeRates(const char *btcRatesDB)
+bool BitcoinExchange::readExchangeRates(void)
 {
-	std::ifstream		xchRates;
+	std::ifstream		infile;
 	std::string			key, value;
 
-	xchRates.open(btcRatesDB, std::ios::in);
-	if (xchRates.fail())
-		return (ERROR_BAD_FILE(btcRatesDB), false);
+	infile.open("data.csv", std::ios::in);
+	if (infile.fail())
+		return (ERROR_BAD_FILE("data.csv"), false);
 
-	std::getline(xchRates, key, ','); // drop header : date,exchange_rate
-	std::getline(xchRates, value);
-	if (key != "date" || value != "exchange_rate")
-		return (ERROR_BAD_FILE(btcRatesDB), false);
+	std::getline(infile, key);
 	while (1)
 	{
-		std::getline(xchRates, key, ',');
-		std::getline(xchRates, value);
-		if (xchRates.eof())
+		std::getline(infile, key, ',');
+		std::getline(infile, value);
+		if (infile.eof())
 			break;
-		this->_database[key] = std::atof(value.c_str());
+		database[key] = std::atof(value.c_str());
 	}
-	xchRates.close();
+	infile.close();
 	return (true);
 }
 
@@ -118,18 +111,15 @@ double BitcoinExchange::findClosestDate(const std::string &date)
 	std::map<std::string, float>::iterator current;
 	std::map<std::string, float>::iterator previous;
 
-	if (date < _database.begin()->first)
+	if (date < database.begin()->first)
 		return (0);
-	if (date > _database.rbegin()->first)
-		return (_database.rbegin()->second);
+	if (date > database.rbegin()->first)
+		return (database.rbegin()->second);
 
-	previous = _database.begin();
-	current = _database.begin();
+	previous = database.begin();
+	current = database.begin();
 	current++;
-
-	
-
-	while (current != _database.end())
+	while (current != database.end())
 	{
 		if (current->first > date)
 			return (previous->second);

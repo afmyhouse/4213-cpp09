@@ -30,16 +30,16 @@ void showCommands(void)
 {
 	// Command-Line Interface list of commands
 	std::cout << "Welcome to the URL History Handler!" << std::endl;
-	std::cout << "Available commands:\n";
-	std::cout << "<visit <url>> - vist http:://example.com , adds http:example.com to the history\n";
-	std::cout << "<back>		- navigates backtime the history\n";
-	std::cout << "<forward>	- navigates the history forward in time, stops at last visited site.\n";
-	std::cout << "<remove <url>>	- remove last history displayed entry\n";
-	std::cout << "<history>	- display all history\n";
-	std::cout << "<clear>		- clear all history\n";
-	std::cout << "<sort>		- sort history by url\n";
-	std::cout << "<exit>		- exit the url history application\n" << std::endl;
-	std::cout << "Please enter a command: ";
+	std::cout << "Available commands:" << std::endl;
+	std::cout << "<visit <url>> - vist http:://example.com , adds http:example.com to the history" << std::endl;
+	std::cout << "<back>		- navigates backtime the history" << std::endl;
+	std::cout << "<forward>	- navigates the history forward in time, stops at last visited site." << std::endl;
+	std::cout << "<remove <url>>	- remove last history displayed entry" << std::endl;
+	std::cout << "<history>	- display all history" << std::endl;
+	std::cout << "<clear>		- clear all history" << std::endl;
+	std::cout << "<sort>		- sort history by url" << std::endl;
+	std::cout << "<exit>		- exit the url history application" << std::endl;
+	std::cout << std::endl <<  "Please enter a command: ";
 
 }
 
