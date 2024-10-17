@@ -12,6 +12,7 @@ class urlHistoryHandler
 {
 	private:
 		std::deque<std::string> _history;
+		std::deque<std::string> _forwardHistory;
 	public:
 		// Constructors & Destructors
 		urlHistoryHandler();
@@ -31,6 +32,7 @@ class urlHistoryHandler
 		void clearHistory(void);
 		void sortHistory(void);
 		void copyHistory(const std::deque<std::string>& history);
+		void showCurrent(void);
 
 	class urlHistoryEmptyException : public std::exception
 	{
@@ -38,5 +40,22 @@ class urlHistoryHandler
 			virtual const char* what() const throw();
 	};
 
+	class urlHistoryBackException : public std::exception
+	{
+		public:
+			virtual const char* what() const throw();
+	};
+
+	class urlHistoryForwardException : public std::exception
+	{
+		public:
+			virtual const char* what() const throw();
+	};
+
+	class urlHistoryIndexException : public std::exception
+	{
+		public:
+			virtual const char* what() const throw();
+	};
 };
 #endif

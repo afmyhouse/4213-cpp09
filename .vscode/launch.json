@@ -5,11 +5,11 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": [],
+      "args": ["128"],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "${workspaceFolder}/ex",
-      "program": "${worksapceFolder}/ex/ex",
+      "cwd": "${workspaceFolder}/ex/",
+      "program": "${workspaceFolder}/ex/ex",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
@@ -18,7 +18,8 @@
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
         }
-      ]
-    }
+      ],
+      "preLaunchTask": "build",
+    },
   ]
 }
