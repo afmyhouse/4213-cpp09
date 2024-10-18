@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:20:55 by crypto            #+#    #+#             */
-/*   Updated: 2024/10/17 15:50:02 by antoda-s         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:51:10 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,16 @@
 # include <ctime>
 # include <map>
 
-# define RED	"\033[1;31m"
-# define GREEN	"\033[1;32m"
-# define RESET	"\033[0m"
-
-# define ERROR(str)			std::cout << RED << str << RESET "\n"
-# define ERROR_BAD_FILE(x)	ERROR("ERROR: couldn't open '" << x << "'")
-# define ERROR_BAD_INPUT(x)	ERROR("ERROR: bad input => '" << x << "'")
-# define ERROR_BAD_DATE(x)	ERROR("ERROR: weird date => '" << x << "'")
-# define ERROR_NOT_INT(x)	ERROR("ERROR: value not between [0, 1000] => '" << x << "'")
-# define ERROR_BAD_NUM(x)	ERROR("ERROR: not a positive number => '" << x << "'")
-# define ERROR_USAGE		ERROR("ERROR: ./BitcoinExchange filename")
-
 class BitcoinExchange
 {
 	private:
 		std::map<std::string, float> _database;
+
+		bool readExchangeRates(const char* database);
+		bool extract(const std::string &line, std::string &date, double &ammount);
+		bool isValidDate(const std::string &date);
+		bool inputValidation(const char *btcInput);
+		double findClosestDate(const std::string &date);
 
 	public:
 		//! Constructors and destructor
@@ -51,12 +45,6 @@ class BitcoinExchange
 
 		//! Member functions
 		bool btcXchange(const char *filename, const char* btcRatesDB);
-
-	private:
-		bool readExchangeRates(const char* database);
-		bool extract(const std::string &line, std::string &date, double &ammount);
-		bool isValidDate(const std::string &date);
-		double findClosestDate(const std::string &date);
 
 	class InvalidDateException : public std::exception
 	{

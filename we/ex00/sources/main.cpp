@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncarvalh <ncarvalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:14:30 by crypto            #+#    #+#             */
-/*   Updated: 2023/09/23 19:51:26 by ncarvalh         ###   ########.fr       */
+/*   Updated: 2024/10/18 11:09:18 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ int main(int argc, char **argv)
 	if (argc < 2)
 		return (ERROR_USAGE, 1);
 	if (!currency.convert(argv[1]))
-		return (ERROR_BAD_FILE(argv[1]), 1);
+		return (E_OPEN_FILE(argv[1]), 1);
 	return (0);
 }

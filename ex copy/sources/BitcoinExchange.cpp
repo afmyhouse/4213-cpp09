@@ -53,7 +53,7 @@ bool BitcoinExchange::readExchangeRates(void)
 
 	infile.open("data.csv", std::ios::in);
 	if (infile.fail())
-		return (ERROR_BAD_FILE("data.csv"), false);
+		return (E_OPEN_FILE("data.csv"), false);
 
 	std::getline(infile, key);
 	while (1)

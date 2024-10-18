@@ -1,5 +1,5 @@
 #include "../includes/BitcoinExchange.hpp"
-
+#include "../includes/tests.hpp"
 
 BitcoinExchange::BitcoinExchange() {}
 
@@ -17,7 +17,20 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& right)
 	return (*this);
 }
 
-bool BitcoinExchange::btcXchange(const char *filename, const char* btcRatesDB)
+bool BitcoinExchange::inputValidation(const char *btcInput)
+{
+	std::string		fileName(btcInput);
+	std::string		extension;
+
+	if (fileName.size() < 5)
+		return (E_INPUT_NAME(btcInput), false);
+	extension = fileName.substr(fileName.size() - 4, 4);
+	if (extension != ".csv")
+		return (E_INPUT_EXT(btcInput), false);
+	return (true);
+}
+
+bool BitcoinExchange::btcXchange(const char *btcInput, const char* btcRatesDB)
 {
 	std::ifstream	inputFile;
 	std::string		line, date;
@@ -26,14 +39,10 @@ bool BitcoinExchange::btcXchange(const char *filename, const char* btcRatesDB)
 	if (!this->readExchangeRates(btcRatesDB))
 		return (false);
 
-	inputFile.open(filename, std::ios::in);
-	if (inputFile.fail())
+	if (!this->inputValidation(btcInput))
 		return (false);
 
-	std::getline(inputFile, date, '|'); // drop header : date | ammount
-	std::getline(inputFile, line);
-	if (date != "date" || line != "ammount")
-		return (ERROR_BAD_FILE(filename), false);
+
 
 	while (!inputFile.eof())
 	{
@@ -56,13 +65,15 @@ bool BitcoinExchange::readExchangeRates(const char *btcRatesDB)
 	std::string			key, value;
 
 	xchRates.open(btcRatesDB, std::ios::in);
+
+
 	if (xchRates.fail())
-		return (ERROR_BAD_FILE(btcRatesDB), false);
+		return (E_OPEN_FILE(btcRatesDB), false);
 
 	std::getline(xchRates, key, ','); // drop header : date,exchange_rate
 	std::getline(xchRates, value);
 	if (key != "date" || value != "exchange_rate")
-		return (ERROR_BAD_FILE(btcRatesDB), false);
+		return (E_OPEN_FILE(btcRatesDB), false);
 	while (1)
 	{
 		std::getline(xchRates, key, ',');
@@ -141,30 +152,30 @@ double BitcoinExchange::findClosestDate(const std::string &date)
 
 const char* BitcoinExchange::InvalidDateException::what() const throw()
 {
-	return ("Invalid date");
+	return ("ERROR: weird date => '");
 }
 
 const char* BitcoinExchange::InvalidInputException::what() const throw()
 {
-	return ("Invalid input");
+	return ("ERROR: bad input => '");
 }
 
 const char* BitcoinExchange::InvalidNumberException::what() const throw()
 {
-	return ("Invalid number");
+	return ("ERROR: value not between [0, 1000] => '");
 }
 
 const char* BitcoinExchange::InvalidIntException::what() const throw()
 {
-	return ("Invalid integer");
+	return ("ERROR: value not between [0, 1000] => '");
 }
 
 const char* BitcoinExchange::InvalidFileException::what() const throw()
 {
-	return ("Invalid file");
+	return ("ERROR: couldn't open '");
 }
 
 const char* BitcoinExchange::InvalidDatabaseException::what() const throw()
 {
-	return ("Invalid database");
+	return ("ERROR: invalid database");
 }

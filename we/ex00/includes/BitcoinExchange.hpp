@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncarvalh <ncarvalh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:20:55 by crypto            #+#    #+#             */
-/*   Updated: 2023/09/23 19:52:29 by ncarvalh         ###   ########.fr       */
+/*   Updated: 2024/10/18 08:28:29 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,14 @@ class BitcoinExchange
 
 		//! Member functions
 		bool convert(const char *filename);
-	
+
 	private:
 		bool readExchangeRates(void);
 		bool extract(const std::string &line, std::string &date, double &ammount);
 		bool isValidDate(const std::string &date);
 		double findClosestDate(const std::string &date);
+
+		
 };
 
 #endif
