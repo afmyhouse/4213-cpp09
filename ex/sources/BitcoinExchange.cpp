@@ -127,7 +127,7 @@ double BitcoinExchange::findClosestDate(const std::string &date)
 	current = _database.begin();
 	current++;
 
-	
+
 
 	while (current != _database.end())
 	{
@@ -137,4 +137,34 @@ double BitcoinExchange::findClosestDate(const std::string &date)
 		++current;
 	}
 	return (0);
+}
+
+const char* BitcoinExchange::InvalidDateException::what() const throw()
+{
+	return ("Invalid date");
+}
+
+const char* BitcoinExchange::InvalidInputException::what() const throw()
+{
+	return ("Invalid input");
+}
+
+const char* BitcoinExchange::InvalidNumberException::what() const throw()
+{
+	return ("Invalid number");
+}
+
+const char* BitcoinExchange::InvalidIntException::what() const throw()
+{
+	return ("Invalid integer");
+}
+
+const char* BitcoinExchange::InvalidFileException::what() const throw()
+{
+	return ("Invalid file");
+}
+
+const char* BitcoinExchange::InvalidDatabaseException::what() const throw()
+{
+	return ("Invalid database");
 }

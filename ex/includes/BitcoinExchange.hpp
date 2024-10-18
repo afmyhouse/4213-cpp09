@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:20:55 by crypto            #+#    #+#             */
-/*   Updated: 2024/10/17 11:13:12 by antoda-s         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:50:02 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,42 @@ class BitcoinExchange
 		bool extract(const std::string &line, std::string &date, double &ammount);
 		bool isValidDate(const std::string &date);
 		double findClosestDate(const std::string &date);
+
+	class InvalidDateException : public std::exception
+	{
+		public:
+			virtual const char* what() const throw();
+	};
+
+	class InvalidInputException : public std::exception
+	{
+		public:
+			virtual const char* what() const throw();
+	};
+
+	class InvalidNumberException : public std::exception
+	{
+		public:
+			virtual const char* what() const throw();
+	};
+
+	class InvalidIntException : public std::exception
+	{
+		public:
+			virtual const char* what() const throw();
+	};
+
+	class InvalidFileException : public std::exception
+	{
+		public:
+			virtual const char* what() const throw();
+	};
+
+	class InvalidDatabaseException : public std::exception
+	{
+		public:
+			virtual const char* what() const throw();
+	};
 };
 
 #endif
