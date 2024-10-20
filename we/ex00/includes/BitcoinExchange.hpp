@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:20:55 by crypto            #+#    #+#             */
-/*   Updated: 2024/10/18 08:28:29 by antoda-s         ###   ########.fr       */
+/*   Updated: 2024/10/20 16:10:54 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ class BitcoinExchange
 
 	private:
 		bool readExchangeRates(void);
-		bool extract(const std::string &line, std::string &date, double &ammount);
+		bool inputReadLine(const std::string &line, std::string &date, double &ammount);
 		bool isValidDate(const std::string &date);
 		double findClosestDate(const std::string &date);
 
-		
+
 };
 
 #endif

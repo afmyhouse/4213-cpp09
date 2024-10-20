@@ -19,7 +19,7 @@ VPATH = $(SRCSD) $(addprefix $(SRCSD), $(SUBSD))
 NAME = $(shell basename $(CURDIR))
 # NAME = btc
 FILES =  main
-# FILES += BitcoinExchange
+FILES += BitcoinExchange
 OBJS = $(FILES:%=%.o)
 TARGET = $(addprefix $(OBJSD), $(OBJS))
 

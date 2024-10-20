@@ -34,7 +34,7 @@ bool BitcoinExchange::convert(const char *filename)
 	while (!infile.eof())
 	{
 		std::getline(infile, line);
-		if (line == "" || !extract(line, date, ammount))
+		if (line == "" || !inputReadLine(line, date, ammount))
 			continue;
 		if (database.find(date) == database.end())
 			worth = findClosestDate(date);
@@ -68,7 +68,7 @@ bool BitcoinExchange::readExchangeRates(void)
 	return (true);
 }
 
-bool BitcoinExchange::extract(const std::string &line, std::string &date, double &ammount)
+bool BitcoinExchange::inputReadLine(const std::string &line, std::string &date, double &ammount)
 {
 	std::istringstream	stream(line);
 	char				delimiter;

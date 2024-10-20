@@ -27,15 +27,17 @@
 
 # define E_DATA_OPEN(e)			E_MSG("ERROR: file database : couldn't open file '" << e << "'")
 # define E_DATA_FORMAT(e)		E_MSG("ERROR: file database : bad database formating => '" << e << "'")
-# define E_DATA_HEADER(e)		E_MSG("ERROR: file database : bad header => '" << e << "'")
+# define E_DATA_NAME(e)			E_MSG("ERROR: file database : bad name => '" << e << "'")
+# define E_DATA_EXT(e)			E_MSG("ERROR: file database : bad extension => '" << e << "'")
+
 # define E_INPUT_OPEN(e)		E_MSG("ERROR: file input : couldn't open file '" << e << "'")
 # define E_INPUT_FORMAT(e)		E_MSG("ERROR: file input : bad input formating => '" << e << "'")
 # define E_INPUT_NAME(e)		E_MSG("ERROR: file input : bad name => '" << e << "'. Use : <filename.txt>")
-# define E_INPUT_EXT(e)			E_MSG("ERROR: file input : bad name => '" << e << "'. Use : <filename.txt>")
+# define E_INPUT_EXT(e)			E_MSG("ERROR: file input : bad extension => '" << e << "'. Use : <filename.txt>")
 
 # define E_DATE_INVALID(e)		E_MSG("ERROR: file input : invalid date value => '" << e << "'")
 # define E_NUM_LIMITS(e)		E_MSG("ERROR: file input : amount value out of range [0, 1000] => '" << e << "'")
-# define E_NUM_POSITIV(e)		E_MSG("ERROR: file input : amount value is negative => '" << e << "'")
+# define E_NUM_NEGATIVE(e)		E_MSG("ERROR: file input : amount value is negative => '" << e << "'")
 
 
 

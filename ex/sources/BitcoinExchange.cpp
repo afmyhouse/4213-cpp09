@@ -25,29 +25,40 @@ bool BitcoinExchange::inputValidation(const char *btcInput)
 	if (fileName.size() < 5)
 		return (E_INPUT_NAME(btcInput), false);
 	extension = fileName.substr(fileName.size() - 4, 4);
-	if (extension != ".csv")
+	if (extension != ".txt")
 		return (E_INPUT_EXT(btcInput), false);
 	return (true);
 }
 
-bool BitcoinExchange::btcXchange(const char *btcInput, const char* btcRatesDB)
+bool BitcoinExchange :: dataValidation(const char *btcRatesDB)
+{
+	std::string		fileName(btcRatesDB);
+	std::string		extension;
+
+	if (fileName.size() < 5)
+		return (E_DATA_NAME(btcRatesDB), false);
+	extension = fileName.substr(fileName.size() - 4, 4);
+	if (extension != ".csv")
+		return (E_DATA_EXT(btcRatesDB), false);
+	return (true);
+}
+
+bool BitcoinExchange :: btcXchange(const char *btcInput, const char* btcRatesDB)
 {
 	std::ifstream	inputFile;
 	std::string		line, date;
 	double			ammount, worth;
 
 	if (!this->readExchangeRates(btcRatesDB))
-		return (false);
+		throw InvalidDatabaseException();
 
 	if (!this->inputValidation(btcInput))
-		return (false);
-
-
+		throw InvalidFileException();
 
 	while (!inputFile.eof())
 	{
 		std::getline(inputFile, line);
-		if (line == "" || !extract(line, date, ammount))
+		if (line == "" || !inputReadLine(line, date, ammount))
 			continue;
 		if (_database.find(date) == _database.end())
 			worth = findClosestDate(date);
@@ -65,15 +76,13 @@ bool BitcoinExchange::readExchangeRates(const char *btcRatesDB)
 	std::string			key, value;
 
 	xchRates.open(btcRatesDB, std::ios::in);
-
-
 	if (xchRates.fail())
-		return (E_OPEN_FILE(btcRatesDB), false);
+		return (E_DATA_OPEN(btcRatesDB), false);
 
 	std::getline(xchRates, key, ','); // drop header : date,exchange_rate
 	std::getline(xchRates, value);
 	if (key != "date" || value != "exchange_rate")
-		return (E_OPEN_FILE(btcRatesDB), false);
+		return (E_DATA_FORMAT(btcRatesDB), false);
 	while (1)
 	{
 		std::getline(xchRates, key, ',');
@@ -83,22 +92,26 @@ bool BitcoinExchange::readExchangeRates(const char *btcRatesDB)
 		this->_database[key] = std::atof(value.c_str());
 	}
 	xchRates.close();
+	std::cout << "Database loaded" << std::endl;
+	std::map<std::string, float>::iterator printer;
+	for (printer = _database.begin(); printer != _database.end(); ++printer)
+		std::cout << printer->first << " => " << printer->second << std::endl;
 	return (true);
 }
 
-bool BitcoinExchange::extract(const std::string &line, std::string &date, double &ammount)
+bool BitcoinExchange::inputReadLine(const std::string &line, std::string &date, double &ammount)
 {
 	std::istringstream	stream(line);
 	char				delimiter;
 
 	if (!(stream >> date >> delimiter >> ammount))
-		return (ERROR_BAD_INPUT(line), false);
+		return (E_INPUT_FORMAT(line), false);
 	if (!isValidDate(date))
-		return (ERROR_BAD_DATE(line), false);
+		return (E_DATE_INVALID(line), false);
 	if (ammount < 0)
-		return (ERROR_BAD_NUM(line), false);
+		return (E_NUM_NEGATIVE(line), false);
 	if (ammount > 1000)
-		return (ERROR_NOT_INT(line), false);
+		return (E_NUM_LIMITS(line), false);
 	return (true);
 }
 
@@ -106,28 +119,29 @@ bool BitcoinExchange::isValidDate(const std::string &date)
 {
 	char 				hifen;
 	std::stringstream	stream(date);
-	struct tm 			old = {}, normalized = {};
+	struct tm 			inputDate = {}, normalDate = {};
 
 	if (date.size() != 10)
 		return (false);
 
-	if (!(stream >> old.tm_year >> hifen >> old.tm_mon >> hifen >> old.tm_mday))
+	if (!(stream >> inputDate.tm_year >> hifen >> inputDate.tm_mon >> hifen >> inputDate.tm_mday))
 		return (false);
 
-	old.tm_mon -= 1;
-	old.tm_year -= 1900;
-	normalized = old;
-	mktime(&normalized);
+	inputDate.tm_mon -= 1;
+	inputDate.tm_year -= 1900;
+	normalDate = inputDate;
+	mktime(&normalDate);
 
-	return (normalized.tm_year == old.tm_year \
-			&& normalized.tm_mon == old.tm_mon \
-			&& normalized.tm_mday == old.tm_mday);
+	return (normalDate.tm_year == inputDate.tm_year \
+			&& normalDate.tm_mon == inputDate.tm_mon \
+			&& normalDate.tm_mday == inputDate.tm_mday);
 }
 
 double BitcoinExchange::findClosestDate(const std::string &date)
 {
 	std::map<std::string, float>::iterator current;
 	std::map<std::string, float>::iterator previous;
+	std::map<std::string, float>::iterator wanted;
 
 	if (date < _database.begin()->first)
 		return (0);
@@ -138,7 +152,9 @@ double BitcoinExchange::findClosestDate(const std::string &date)
 	current = _database.begin();
 	current++;
 
+	wanted = _database.upper_bound(date);
 
+	std::cout << "wanted : " << wanted->first << " => " << wanted->second << std::endl;
 
 	while (current != _database.end())
 	{

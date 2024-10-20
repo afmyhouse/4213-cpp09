@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/05 18:20:55 by crypto            #+#    #+#             */
-/*   Updated: 2024/10/18 11:51:10 by antoda-s         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef BITCOIN_EXCHANGE_HPP
 # define BITCOIN_EXCHANGE_HPP
 
@@ -29,9 +17,10 @@ class BitcoinExchange
 		std::map<std::string, float> _database;
 
 		bool readExchangeRates(const char* database);
-		bool extract(const std::string &line, std::string &date, double &ammount);
+		bool inputReadLine(const std::string &line, std::string &date, double &ammount);
 		bool isValidDate(const std::string &date);
 		bool inputValidation(const char *btcInput);
+		bool dataValidation(const char *btcRatesDB);
 		double findClosestDate(const std::string &date);
 
 	public:
