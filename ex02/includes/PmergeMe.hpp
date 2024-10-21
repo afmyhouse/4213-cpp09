@@ -4,6 +4,7 @@
 # include <iostream>
 # include <iomanip>
 # include <sstream>
+# include <string>
 # include <limits>
 # include <chrono>
 # include <cmath>
@@ -22,7 +23,8 @@ class PmergeMe
 	private:
 		const std::string type;
 		std::chrono::high_resolution_clock::time_point start, end;
-		std::chrono::duration<double> elapsedTime;
+		std::chrono::duration<double		// VECTOR OPERATIONS _____________________
+> elapsedTime;
 
 	public:
 		PmergeMe();
@@ -33,11 +35,13 @@ class PmergeMe
 
 		double mergeInsertionSort(std::vector<int> &nums);
 		double mergeInsertionSort(std::deque<int> &nums);
-		bool parse(char **argv, std::vector<int> &vec, std::deque<int> &deque);
+		bool parser(char **argv, std::vector<int> &vec, std::deque<int> &deque);
 
 	private:
-		// VECTOR OPERATIONS _____________________
+		// common operations
+		std::string joinStrings(const std::vector<std::string>& strings);
 
+		// vector container operations
 		void createPairs(const std::vector<int> &nums, std::vector<std::vector<int>> &pairs);
 		void generateJacobsthalSequence(std::vector<size_t> &vec);
 		void mergeSort(std::vector<std::vector<int>> &pairs);
@@ -46,8 +50,7 @@ class PmergeMe
 		void insertionSort(std::vector<int> &S, size_t n, const std::vector<std::vector<int>> &pairs);
 		void binarySearch(std::vector<int> &S, int number);
 
-		//DEQUE OPERATIONS _____________________
-
+		// deque container operations
 		void createPairs(const std::deque<int> &nums, std::deque<std::deque<int>> &pairs);
 		void generateJacobsthalSequence(std::deque<size_t> &vec);
 		void mergeSort(std::deque<std::deque<int>> &pairs);

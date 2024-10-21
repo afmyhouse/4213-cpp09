@@ -1,4 +1,4 @@
-#include "PmergeMe.hpp"
+#include "../includes/PmergeMe.hpp"
 
 template <class T>
 void print(T &container)
@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 
 	if (argc < 2)
 		return (-1);
-	if (!sorter.parse(argv + 1, vec, deque))
+	if (!sorter.parser(argv + 1, vec, deque))
 		return (std::cout << "Error\n", 1);
 
 	std::cout << "Before: ";

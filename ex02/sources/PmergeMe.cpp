@@ -1,24 +1,14 @@
-#include "PmergeMe.hpp"
+#include "../includes/PmergeMe.hpp"
 
 
-PmergeMe::PmergeMe() : type("none")
-{
+PmergeMe::PmergeMe() : type("none") {}
 
-}
+PmergeMe::PmergeMe(const PmergeMe& copy) : type(copy.type) {*this = copy;}
 
-PmergeMe::PmergeMe(const PmergeMe& copy) : type(copy.type)
-{
-	*this = copy;
-}
-
-PmergeMe::~PmergeMe()
-{
-
-}
+PmergeMe::~PmergeMe() {}
 
 
-PmergeMe& PmergeMe::operator=(const PmergeMe& right)
-{
+PmergeMe& PmergeMe::operator=(const PmergeMe& right) {
 	if (this == &right)
 		return (*this);
 	this->start = right.start;
@@ -27,8 +17,19 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& right)
 	return (*this);
 }
 
+std::string PmergeMe :: joinStrings(const std::vector<std::string>& strings) {
+	std::string result;
+	for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it) {
+		result += *it;
+		if (it + 1 != strings.end()) {
+			result += " "; // Add a space if it's not the last element
+		}
+	}
+	return result;
+}
 
-bool PmergeMe::parse(char **argv, std::vector<int> &vec, std::deque<int> &deque)
+
+bool PmergeMe::parser(char **argv, std::vector<int> &vec, std::deque<int> &deque)
 {
 	int					number;
 	std::stringstream	stream;
