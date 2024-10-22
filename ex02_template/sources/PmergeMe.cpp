@@ -96,7 +96,7 @@ void PmergeMe::mergeSort(std::vector<std::vector<int>> &pairs)
 
 void PmergeMe::createPairs(const std::vector<int> &nums, std::vector<std::vector<int>> &pairs)
 {
-	size_t	numPairs = std::ceil(nums.size() / 2.0);
+	size_t							numPairs = std::ceil(nums.size() / 2.0);
 
 	pairs.resize(numPairs);
 	pairs.assign(numPairs, std::vector<int>(2));
@@ -159,32 +159,24 @@ void PmergeMe::insertionSort(std::vector<int> &S, size_t n, const std::vector<st
 	}
 }
 
-double PmergeMe::elapsedTime(const timeval &end, const timeval &start)
-{
-	long seconds = end.tv_sec - start.tv_sec;
-	long micros = ((seconds * 1000000) + end.tv_usec) - (start.tv_usec);
-	return (seconds * 1e6 + micros);
-}
-
 double PmergeMe::mergeInsertionSort(std::vector<int> &nums)
 {
 	std::vector<std::vector<int>>	pairs;
 	std::vector<int>				S;
 
-	gettimeofday(&start, NULL); // = std::chrono::high_resolution_clock::now();
+	start = std::chrono::high_resolution_clock::now();
 
 	createPairs(nums, pairs);
 	mergeSort(pairs);
 	for (size_t i = 0 ; i < pairs.size() && pairs[i][A] != UNUSED; i++)
 		S.push_back(pairs[i][A]);
 	insertionSort(S, nums.size(), pairs);
-	gettimeofday(&end, NULL); // = std::chrono::high_resolution_clock::now();
 
-	long seconds = end.tv_sec - start.tv_sec;
-	long micros = ((seconds * 1000000) + end.tv_usec) - (start.tv_usec);
-	elapsedTime = seconds * 1e6 + micros;
+	end = std::chrono::high_resolution_clock::now();
+	
+	elapsedTime = end - start;
 	nums = S;
-	return (elapsedTime);
+	return (elapsedTime.count());
 }
 
 //! ______________________ DEQUE OPERATIONS _____________________
