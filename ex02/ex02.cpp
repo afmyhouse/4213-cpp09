@@ -40,6 +40,7 @@ std::string joinStrings(int argc, char **argv) {
 	return result;
 }
 
+
 int main(int argc, char **argv) {
 	std::string joinedString = joinStrings(argc, argv);
 	if (!joinedString.empty()) {

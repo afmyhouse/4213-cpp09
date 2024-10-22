@@ -5,7 +5,7 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": ["input.txt"],
+      "args": ["3 5 9 7 4"],
       "stopAtEntry": false,
       "externalConsole": false,
       "cwd": "${workspaceFolder}/ex/",

@@ -108,6 +108,9 @@
     "map": "cpp",
     "cinttypes": "cpp",
     "chrono": "cpp",
-    "ratio": "cpp"
+    "ratio": "cpp",
+    "compare": "cpp",
+    "concepts": "cpp",
+    "numbers": "cpp"
   }
 }
