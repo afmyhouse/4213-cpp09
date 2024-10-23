@@ -2,6 +2,8 @@
 #include <string>
 #include <cctype> // For isdigit()
 
+// check this functions
+
 bool isInteger(const std::string& str) {
 	if (str.empty()) {
 		return false; // An empty string is not an integer

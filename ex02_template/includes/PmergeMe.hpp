@@ -4,6 +4,8 @@
 # include <iostream>
 # include <iomanip>
 # include <sstream>
+# include <ctime>
+# include <sys/time.h>
 # include <string>
 # include <limits>
 # include <chrono>
@@ -22,8 +24,8 @@ class PmergeMe
 {
 	private:
 		const std::string type;
-		std::chrono::high_resolution_clock::time_point start, end;
-		std::chrono::duration<double> elapsedTime;
+		struct timeval _start, _end;
+		double _elapsedTime;
 
 	public:
 		PmergeMe();
@@ -32,31 +34,27 @@ class PmergeMe
 
 		PmergeMe& operator=(const PmergeMe& right);
 
-		double mergeInsertionSort(std::vector<int> &nums);
-		double mergeInsertionSort(std::deque<int> &nums);
-		bool parser(char **argv, std::vector<int> &vec, std::deque<int> &deque);
+		template <typename Container>
+		double mergeInsertionSort(Container &nums);
 
 	private:
-		// common operations
-		std::string joinStrings(const std::vector<std::string>& strings);
+		template <typename Container>
+		void createPairs(const Container &nums, Container &pairs);
 
-		// vector container operations
-		void createPairs(const std::vector<int> &nums, std::vector<std::vector<int> > &pairs);
-		void generateJacobsthalSequence(std::vector<size_t> &vec);
-		void mergeSort(std::vector<std::vector<int> > &pairs);
-		void merge(std::vector<std::vector<int> > &left, std::vector<std::vector<int> > &right, \
-			std::vector<std::vector<int> > &result);
-		void insertionSort(std::vector<int> &S, size_t n, const std::vector<std::vector<int> > &pairs);
-		void binarySearch(std::vector<int> &S, int number);
+		template <typename Container>
+		void merge(Container &left, Container &right, Container &result);
 
-		// deque container operations
-		void createPairs(const std::deque<int> &nums, std::deque<std::deque<int> > &pairs);
-		void generateJacobsthalSequence(std::deque<size_t> &vec);
-		void mergeSort(std::deque<std::deque<int> > &pairs);
-		void merge(std::deque<std::deque<int> > &left, std::deque<std::deque<int> > &right, \
-			std::deque<std::deque<int> > &result);
-		void insertionSort(std::deque<int> &S, size_t n, const std::deque<std::deque<int> > &pairs);
-		void binarySearch(std::deque<int> &S, int number);
+		template <typename Container>
+		void mergeSort(Container &pairs);
+
+		template <typename Container>
+		void generateJacobsthalNumbers(Container &jacobsthal, int max);
+
+		template <typename Container>
+		void jacobsthalInsert(Container& S, int element);
+
+		template <typename Container>
+		void insertionSort(Container &S, size_t n, const Container &pairs);
 };
 
 #endif

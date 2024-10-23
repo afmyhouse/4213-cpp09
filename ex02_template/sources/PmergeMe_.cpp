@@ -1,39 +1,81 @@
-#include "../includes/PmergeMe.hpp"
+#ifndef PMERGEME_HPP
+# define PMERGEME_HPP
 
+# include <iostream>
+# include <iomanip>
+# include <sstream>
+# include <string>
+# include <limits>
+# include <sys/time.h> // for gettimeofday in C++98
+# include <cmath>
+# include <vector>
+# include <deque>
+# include <algorithm>
 
-PmergeMe::PmergeMe() : type("none") {}
+# define UNUSED -1
+# define A 0
+# define B 1
 
-PmergeMe::PmergeMe(const PmergeMe& copy) : type(copy.type) {*this = copy;}
+class PmergeMe
+{
+	private:
+		struct timeval _start, _end;
 
-PmergeMe::~PmergeMe() {}
+	public:
+		PmergeMe() {}
+		~PmergeMe() {}
 
+		// General sorting method template for both std::vector and std::deque
+		template <typename Container>
+		double mergeInsertionSort(Container &nums);
 
-PmergeMe& PmergeMe::operator=(const PmergeMe& src) {
-	if (this != &src)
-		this->_elapsedTime = src._elapsedTime;
-	return (*this);
-}
+	private:
+		// Helper template functions
+		template <typename Container>
+		void createPairs(const Container &nums, Container &pairs);
+
+		template <typename Container>
+		void merge(Container &left, Container &right, Container &result);
+
+		template <typename Container>
+		void mergeSort(Container &pairs);
+
+		template <typename Container>
+		void generateJacobsthalNumbers(Container &jacobsthal, int max);
+
+		template <typename Container>
+		void jacobsthalInsert(Container& S, int element);
+
+		template <typename Container>
+		void insertionSort(Container &S, size_t n, const Container &pairs);
+};
+
+// Implementations of the template methods
 
 template <typename Container>
-void PmergeMe::createPairs(const Container &nums, Container &pairs) {
+void PmergeMe::createPairs(const Container &nums, Container &pairs)
+{
 	size_t numPairs = nums.size() / 2;
 	bool hasOddElement = nums.size() % 2 != 0;
 
-	pairs.resize(numPairs + hasOddElement);
+	pairs.resize(numPairs + hasOddElement);  // Adjust pair size if odd element exists
 
 	for (size_t i = 0; i < numPairs; ++i) {
-		pairs[i].first = std::min(nums[2 * i], nums[2 * i + 1]);
-		pairs[i].second = std::max(nums[2 * i], nums[2 * i + 1]);
+		// Create pairs by taking elements two at a time
+		pairs[i][A] = std::min(nums[2 * i], nums[2 * i + 1]);
+		pairs[i][B] = std::max(nums[2 * i], nums[2 * i + 1]);
 	}
 
+	// Handle the last element if the container has an odd size
 	if (hasOddElement) {
-		pairs[numPairs].first = UNUSED;
-		pairs[numPairs].second = nums.back();
+		pairs[numPairs][A] = UNUSED;
+		pairs[numPairs][B] = nums.back();
 	}
 }
 
 template <typename Container>
-void PmergeMe::merge(Container &left, Container &right, Container &result) {
+void PmergeMe::merge(Container &left, Container &right, Container &result)
+{
 	result.clear();
 	while (!left.empty() && !right.empty())
 	{
@@ -61,7 +103,8 @@ void PmergeMe::merge(Container &left, Container &right, Container &result) {
 }
 
 template <typename Container>
-void PmergeMe::mergeSort(Container &pairs) {
+void PmergeMe::mergeSort(Container &pairs)
+{
 	typename Container::iterator mid = pairs.begin() + pairs.size() / 2;
 
 	Container left(pairs.begin(), mid);
@@ -75,7 +118,6 @@ void PmergeMe::mergeSort(Container &pairs) {
 	merge(left, right, pairs);
 }
 
-
 template <typename Container>
 void PmergeMe::generateJacobsthalNumbers(Container &jacobsthal, int max) {
 	int j0 = 0, j1 = 1;
@@ -83,7 +125,7 @@ void PmergeMe::generateJacobsthalNumbers(Container &jacobsthal, int max) {
 	jacobsthal.push_back(j1);
 
 	while (true) {
-		int j_next = j1 + 2 * j0;
+		int j_next = j1 + 2 * j0; // Jacobsthal recurrence relation
 		if (j_next > max) break;
 		jacobsthal.push_back(j_next);
 		j0 = j1;
@@ -92,7 +134,7 @@ void PmergeMe::generateJacobsthalNumbers(Container &jacobsthal, int max) {
 }
 
 template <typename Container>
-void jacobsthalInsert(Container& S, int element) {
+void PmergeMe::jacobsthalInsert(Container& S, int element) {
 	int left = 0;
 	int right = static_cast<int>(S.size() - 1);
 
@@ -109,7 +151,8 @@ void jacobsthalInsert(Container& S, int element) {
 }
 
 template <typename Container>
-void PmergeMe::insertionSort(Container &S, size_t n, const Container &pairs) {
+void PmergeMe::insertionSort(Container &S, size_t n, const Container &pairs)
+{
 	Container jacobsthal;
 	generateJacobsthalNumbers(jacobsthal, static_cast<int>(S.size() - 1));
 
@@ -127,7 +170,8 @@ void PmergeMe::insertionSort(Container &S, size_t n, const Container &pairs) {
 }
 
 template <typename Container>
-double PmergeMe::mergeInsertionSort(Container &nums) {
+double PmergeMe::mergeInsertionSort(Container &nums)
+{
 	Container pairs;
 	Container S;
 
@@ -147,3 +191,5 @@ double PmergeMe::mergeInsertionSort(Container &nums) {
 	gettimeofday(&_end, NULL); // Capture end time
 	return (_end.tv_sec - _start.tv_sec) * 1000000.0 + (_end.tv_usec - _start.tv_usec);
 }
+
+#endif
