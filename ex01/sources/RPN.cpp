@@ -31,25 +31,23 @@ T RPNCalculator<T>::calculate(const std::string& expression) {
 	std::stack<T> stack;
 	std::istringstream stream(expression);
 	std::string token;
+	if (expression.empty()) {
+		throw std::runtime_error("Invalid RPN expression: empty expression.");
+	}
 
 	while (stream >> token) {
-		if (std::isdigit(token[0])){
-			if (token.size() > 1) {
-				for (size_t i = 1; i < token.size(); i++) {
-					if (!std::isdigit(token[i])) {
-						throw std::runtime_error("Invalid RPN expression: unknow token.");
-					}
-				}
-				throw std::runtime_error("Invalid RPN expression: number too large.");
-			}
-			std::istringstream numberStream(token);
+		if ((token.size() == 1 && std::isdigit(token[0])) ||
+			(token.size() == 2 && token[0] == '-' && std::isdigit(token[1]))) {
 			T number;
-			numberStream >> number;
+			std::istringstream numberStream(token);
+			if (!(numberStream >> number)) {
+				throw std::runtime_error("Invalid RPN expression: invalid number format for token '" + token + "'.");
+			}
 			stack.push(number);
-		} else if (token.size() == 1 && (token== "+" || token == "-" || token == "*" || token == "/")) {
+		} else if (token.size() == 1 && (token == "+" || token == "-" || token == "*" || token == "/")) {
 			applyOperation(stack, token);
 		} else {
-			throw std::runtime_error("Invalid RPN expression: unknown token.");
+			throw std::runtime_error("Invalid RPN expression: unknown token '" + token + "'.");
 		}
 	}
 	if (stack.size() != 1) {

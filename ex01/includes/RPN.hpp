@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <stack>
+#include <string>
 
 // Template class for RPNCalculator
 template <typename T>
