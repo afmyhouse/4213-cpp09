@@ -58,7 +58,7 @@ private:
 	void generateJacobsthalNumbers(Container& jacobsthal, int max);
 
 	template <typename Container>
-	void jacobsthalInsert(Container& S, int element);
+	void jacobsthalInsert(Container& S, int element, size_t k);
 
 	template <class Container, class PairContainer>
 	void insertionSort(Container& S, size_t n, const PairContainer& pairs);

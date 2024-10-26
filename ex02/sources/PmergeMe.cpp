@@ -113,28 +113,33 @@ void PmergeMe::generateJacobsthalNumbers(Container& jacobsthal, int max) {
 }
 
 template <typename Container>
-void PmergeMe::jacobsthalInsert(Container& S, int element) {
+void PmergeMe::jacobsthalInsert(Container& S, int element, size_t k) {
 	if (std::find(S.begin(), S.end(), element) != S.end()) return; // Avoid duplicates
 
 	int left = 0;
-	int right = static_cast<int>(S.size()) - 1;
-
+	// int right = static_cast<int>(S.size()) - 1;
+	int right = static_cast<int>(k);
+	// static int compares = 0;
+	(void) k;
 	while (left <= right) {
 		int mid = left + (right - left) / 2;
 		if (S[mid] < element)
 			left = mid + 1;
 		else if (S[mid] > element)
 			right = mid - 1;
+		compares++;
 	}
 	S.insert(S.begin() + left, element);
+	// std::cout << "Compares : " << compares << std::endl;
 }
 
 template <class Container, class PairContainer>
 void PmergeMe::insertionSort(Container &S, size_t n, const PairContainer &pairs) {
 	Container jacobsthal;
+	size_t original_size = S.size();
 
 	if (pairs.size() > 1 && pairs[1].first != ODDSET)
-		jacobsthalInsert(S, pairs[1].first);
+		jacobsthalInsert(S, pairs[1].first, 1);
 	size_t jacobsthalLimit = S.empty() ? 0 : static_cast<int>(S.size() - 1);
 	generateJacobsthalNumbers(jacobsthal, jacobsthalLimit);
 	for (size_t i = 1; i < jacobsthal.size(); i++) {
@@ -143,7 +148,7 @@ void PmergeMe::insertionSort(Container &S, size_t n, const PairContainer &pairs)
 			if (k >= pairs.size())
 				continue;
 			if (pairs[k].first != ODDSET)
-				jacobsthalInsert(S, pairs[k].first);
+				jacobsthalInsert(S, pairs[k].first, k + S.size() - original_size);
 			if (S.size() == n)
 				return;
 		}

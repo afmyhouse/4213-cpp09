@@ -111,6 +111,8 @@
     "ratio": "cpp",
     "compare": "cpp",
     "concepts": "cpp",
-    "numbers": "cpp"
+    "numbers": "cpp",
+    "ranges": "cpp",
+    "span": "cpp"
   }
 }

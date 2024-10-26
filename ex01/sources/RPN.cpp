@@ -44,7 +44,7 @@ T RPNCalculator<T>::calculate(const std::string& expression) {
 				throw std::runtime_error("Invalid RPN expression: invalid number format for token '" + token + "'.");
 			}
 			stack.push(number);
-		} else if (token.size() == 1 && (token == "+" || token == "-" || token == "*" || token == "/")) {
+		} else if (token.size() == 1 && !std::isdigit(token[0])) {
 			applyOperation(stack, token);
 		} else {
 			throw std::runtime_error("Invalid RPN expression: unknown token '" + token + "'.");
