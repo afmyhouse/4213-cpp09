@@ -83,16 +83,16 @@ int main(int argc, char **argv)
 	std::string joinedString = joinStrings(argc, argv);
 	if (joinedString.empty() || !parser(joinedString, vec) || !parser(joinedString, deq))
 		return (EXIT_FAILURE);
-	// std::cout << "Before: ";
-	// print(vec);
+	std::cout << "Before: ";
+	print(vec);
 
 	PmergeMe sorter;
 
 	double vecTime = sorter.mergeInsertionSort(vec);
 	double deqTime = sorter.mergeInsertionSort(deq);
 
-	// std::cout << "After : ";
-	// print(vec);
+	std::cout << "After : ";
+	print(vec);
 
 	std::cout << "Time to process a range of " << vec.size() << " elements with std::vector : " \
 		<< std::right << std::setw(7) << std::fixed << std::setprecision(3) \

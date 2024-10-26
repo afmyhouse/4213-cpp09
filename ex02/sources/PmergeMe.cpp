@@ -127,7 +127,7 @@ void PmergeMe::jacobsthalInsert(Container& S, int element, size_t k) {
 			left = mid + 1;
 		else if (S[mid] > element)
 			right = mid - 1;
-		compares++;
+		//compares++;
 	}
 	S.insert(S.begin() + left, element);
 	// std::cout << "Compares : " << compares << std::endl;

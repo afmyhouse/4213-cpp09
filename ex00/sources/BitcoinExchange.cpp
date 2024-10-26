@@ -53,7 +53,7 @@ bool BitcoinExchange :: readInputAmount(const char *btcInput)
 
 	while (std::getline(inputFile, line)) {
 		if (line.empty() || !lineValidation(line, date, amount, _WALLET_))
-			continue;
+			continue; /// throw of missig _WALLET__
  		rate = getRateAtNearestDate(date);
 		std::cout.unsetf(std::ios::fixed);
 		std::cout << std::setprecision(6);
