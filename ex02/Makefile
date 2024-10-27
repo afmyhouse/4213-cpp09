@@ -16,6 +16,7 @@ OBJSD = build/
 VPATH = $(SRCSD) $(addprefix $(SRCSD), $(SUBSD))
 
 # files
+# NAME = $(shell basename $(CURDIR))
 NAME = PmergeMe
 FILES =  main
 FILES += PmergeMe

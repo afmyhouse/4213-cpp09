@@ -77,19 +77,32 @@ int main(int argc, char **argv)
 {
 	std::vector<int> vec;
 	std::deque<int> deq;
+	double vecTime, deqTime;
+	struct timeval start, end;
 
 	if (argc < 2)
 		return (EXIT_FAILURE);
 	std::string joinedString = joinStrings(argc, argv);
-	if (joinedString.empty() || !parser(joinedString, vec) || !parser(joinedString, deq))
+	if (joinedString.empty())
 		return (EXIT_FAILURE);
+	gettimeofday(&start, NULL);
+	if (!parser(joinedString, vec))
+		return (EXIT_FAILURE);
+	gettimeofday(&end, NULL);
+	vecTime = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
+	gettimeofday(&start, NULL);
+	if (!parser(joinedString, deq))
+		return (EXIT_FAILURE);
+	gettimeofday(&end, NULL);
+	deqTime = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
+
 	std::cout << "Before: ";
 	print(vec);
 
 	PmergeMe sorter;
 
-	double vecTime = sorter.mergeInsertionSort(vec);
-	double deqTime = sorter.mergeInsertionSort(deq);
+	vecTime += sorter.mergeInsertionSort(vec);
+	deqTime += sorter.mergeInsertionSort(deq);
 
 	std::cout << "After : ";
 	print(vec);

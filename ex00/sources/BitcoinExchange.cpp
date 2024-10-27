@@ -40,7 +40,7 @@ bool BitcoinExchange::readExchangeRates(const char *btcRatesDB)
 
 	while (std::getline(xchRates, line))
 	{
-		if (line.empty() || !lineValidation(line, date, rate, _CSV_))
+		if (line.empty() || !dataLineValidation(line, date, rate))
 			continue;
 		this->_database[date] = rate;
 	}
@@ -63,13 +63,15 @@ bool BitcoinExchange :: readInputAmount(const char *btcInput)
 		throw BitcoinExchangeException("file input : invalid header formating ", header + " => " + in_header);
 
 	while (std::getline(inputFile, line)) {
-		if (line.empty() || !lineValidation(line, date, value, _WALLET_))
+		if (line.empty() || !inputLineValidation(line, date, value))
 			continue;
  		rate = getRateAtNearestDate(date);
-		// std::cout.unsetf(std::ios::fixed);
-		std::cout  << date << " => " << value;
-		std::cout << std::fixed << std::setprecision(3);
-		std::cout  << " = " << (value * rate) << std::endl;
+		if (static_cast<int>(value) == value ){
+		std::cout.unsetf(std::ios::fixed);
+			std::cout << date << " => " << value << " = " << std::fixed << std::setprecision(3) << (value * rate) << std::endl;
+		} else {
+			std::cout << date << " => " << std::fixed << std::setprecision(3) << value << " = " << (value * rate) << std::endl;
+		}
 	}
 	return (true);
 }
@@ -87,30 +89,44 @@ bool BitcoinExchange::fileValidation(const char *filename, const std::string ext
 	return (true);
 }
 
-bool BitcoinExchange::lineValidation(const std::string &line, std::string &date, double &rate, char delimiter)
+bool BitcoinExchange::inputLineValidation(const std::string &line, std::string &date, double &value)
 {
-	std::istringstream	stream(line);
-	char				sep;
-	std::string 		srate;
-
-	if ((delimiter == _CSV_ && std::getline(stream, date, delimiter) && std::getline(stream, srate))
-		|| (delimiter == _WALLET_ && (stream >> date >> sep >> rate)))
-	{
-		if( sep != _WALLET_ &&  delimiter == _WALLET_) {
-			return (E_INPUT_LINE(line), false);
-		} else {
-			rate = delimiter == _CSV_ ? std::strtod(srate.c_str(), NULL) : rate;
-			if (!dateValidation(date))
-				return (E_DATE_INVALID(date), false);
-			if (rate < 0)
-				return (E_NUM_NEGATIVE(rate), false);
-			if (delimiter == _WALLET_ && rate > 1000)
-				return (E_NUM_LIMITS(rate), false);
-		}
-	}
-	else
+	size_t separatorPos = line.find(" | ");
+	if (separatorPos == std::string::npos)
 		return (E_INPUT_FORMAT(line), false);
 
+	date = line.substr(0, separatorPos);
+
+	std::string valueStr = line.substr(separatorPos + 3);
+	char* endPtr;
+	value = std::strtod(valueStr.c_str(), &endPtr);
+
+	if (*endPtr != '\0')
+		return (E_INPUT_FORMAT(line), false);
+	if (!dateValidation(date))
+		return (E_INPUT_DATE(date), false);
+	if (value < 0)
+		return (E_NUM_NEGATIVE(value), false);
+	if (value > 1000)
+		return (E_NUM_LIMITS(value), false);
+	return true;
+}
+
+bool BitcoinExchange::dataLineValidation(const std::string &line, std::string &date, double &rate)
+{
+	std::istringstream	stream(line);
+	std::string 		srate;
+
+	if (std::getline(stream, date, _CSV_) && std::getline(stream, srate))
+	{
+		rate = std::strtod(srate.c_str(), NULL);
+		if (!dateValidation(date))
+			return (E_DATA_DATE(date), false);
+		if (rate < 0)
+			return (E_NUM_NEGATIVE(rate), false);
+	} else {
+		return (E_DATA_FORMAT(line), false);
+	}
 	return (true);
 }
 
