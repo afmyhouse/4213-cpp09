@@ -19,7 +19,7 @@ const std::string SRED = "\033[1;31m";
 const std::string SGRN = "\033[1;32m";
 const std::string SBLU = "\033[1;34m";
 const std::string SRST = "\033[0m";
-const std::string in_header = "date | amount";
+const std::string in_header = "date | value";
 const std::string db_header = "date,exchange_rate";
 
 # define TESTNUM	2
@@ -29,10 +29,11 @@ const std::string db_header = "date,exchange_rate";
 # define E_USE_ARGS_NONUM		E_MSG("ERROR : test number > use a NUMBER!!!")
 # define E_USE_ARGS_LIMITS		E_MSG("ERROR : test number > choose one between 0 and " << TESTNUM)
 
-# define E_INPUT_FORMAT(e)		E_MSG("ERROR: file input : invalid input formating => '" << e << "'")
-# define E_DATE_INVALID(e)		E_MSG("ERROR: file input : invalid date => '" << e << "'")
-# define E_NUM_LIMITS(e)		E_MSG("ERROR: file input : invalid amount : out of range [0, 1000] => '" << std::fixed << std::setprecision(0) << e << "'")
-# define E_NUM_NEGATIVE(e)		E_MSG("ERROR: file input : invalid amount : negative => '" << e << "'")
+# define E_INPUT_FORMAT(e)		E_MSG("ERROR: file input : invalid line  => format      : '" << e << "'")
+# define E_INPUT_LINE(e)		E_MSG("ERROR: file input : invalid line  => delimiter   : '" << e << "'")
+# define E_DATE_INVALID(e)		E_MSG("ERROR: file input : invalid date  => unknow date : '" << e << "'")
+# define E_NUM_LIMITS(e)		E_MSG("ERROR: file input : invalid value => > 1000      ; '" << std::fixed << e << "'")
+# define E_NUM_NEGATIVE(e)		E_MSG("ERROR: file input : invalid value => < 0         : '" << e << "'")
 
 class BitcoinExchange
 {
@@ -43,7 +44,7 @@ class BitcoinExchange
 		bool readExchangeRates(const char* database);
 		bool lineValidation(const std::string &line, std::string &date, double &rate, char delimiter);
 		bool dateValidation(const std::string &date);
-		bool fileValidation(const char *filename, const char* ext, const char* msg);
+		bool fileValidation(const char *filename, const std::string ext, const char* msg);
 		double getRateAtNearestDate(const std::string &date);
 
 	public:
